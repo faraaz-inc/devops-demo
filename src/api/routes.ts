@@ -6,10 +6,11 @@ import { CryptoCurrency } from "../store/types";
 const router = Router();
 
 router.get("/stats", async (req, res) => {
-    const { coin }: InRequest = req.body;
+    const { coin }: InRequest = req.query;
 
     if(!coin || typeof coin !== "string") {
         res.status(400).json("Invalid parameters");
+        return;
     }
 
     try {
@@ -38,9 +39,11 @@ router.get("/stats", async (req, res) => {
 });
 
 router.get("/deviation", async (req, res) => {
-    const { coin }: InRequest = req.body;
+    const { coin }: InRequest = req.query;
+    
     if(!coin || typeof coin !== "string") {
         res.status(400).json({error: "Invalid parameters"});
+        return;
     }
 
     try {

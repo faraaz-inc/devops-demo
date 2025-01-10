@@ -1,6 +1,6 @@
 
 export type InRequest = {
-    coin: "bitcoin" | "ethereum" | "matic-network"
+    coin?: "bitcoin" | "ethereum" | "matic-network"
 }
 
 export interface StatsResponse {
