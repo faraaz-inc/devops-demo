@@ -55,7 +55,7 @@ const updateCryptoData = async() => {
                 current_price: crypto.current_price,
                 market_cap: crypto.market_cap,
                 price_change_24h: crypto.price_change_24h,
-                last_updated: crypto.last_updated,
+                last_updated: new Date(),
             }
             await updateDb(data);
         })
@@ -69,18 +69,8 @@ const updateCryptoData = async() => {
 }
 
 const updateDb = async (data: CryptoCurrency) => {
-    //upsert the data
+    //insert data in database
     const db = getDb();
-    const collection = db.collection("cryptocurrencies");
-
-    await collection.updateOne({id: data.id}, {
-        $set: {
-            name: data.name,
-            symbol: data.symbol,
-            current_price: data.current_price,
-            market_cap: data.market_cap,
-            price_change_24h: data.price_change_24h,
-            last_updated: data.last_updated
-        }
-    }, {upsert: true});
+    const collection = db.collection(data.id);
+    await collection.insertOne(data);
 }

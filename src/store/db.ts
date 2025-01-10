@@ -7,7 +7,7 @@ export const connectToDb = async() => {
     if(!client) {
         client = new MongoClient(process.env.MONGO_URL || "");
         await client.connect();
-        db = client.db("koinx");   
+        db = client.db("koinx-db");   
         console.log("Database connected");
     }
 }

@@ -6,7 +6,7 @@ export interface CryptoCurrency {
     current_price: number,
     market_cap: number,
     price_change_24h: number,
-    last_updated: string
+    last_updated: Date
 }
 
 export interface APIResponse {
