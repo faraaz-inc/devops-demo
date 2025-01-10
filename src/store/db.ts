@@ -8,8 +8,8 @@ export const connectToDb = async() => {
         client = new MongoClient(process.env.MONGO_URL || "");
         await client.connect();
         db = client.db("koinx");   
+        console.log("Database connected");
     }
-    return db;
 }
 
 export const getDb = () => {

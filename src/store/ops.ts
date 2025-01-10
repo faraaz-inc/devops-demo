@@ -3,7 +3,18 @@ import { getDb } from "./db"
 import { APIResponse, CryptoCurrency } from "./types";
 
 
-export const scheduleDbUpdates = () => {
+export const scheduleDbUpdates = async() => {
+    //manually run the first time on starting up the server
+    try {
+        console.log("Fetching crypto data");
+        await updateCryptoData();
+        console.log("Database updated succesfully");
+    }
+    catch(err) {
+        console.error("Error while updating DB");
+        console.log(err);
+    }
+    //set 2 hr interval
     setInterval(async() => {
         try {
             // Call the function to fetch and update data
@@ -26,19 +37,21 @@ const updateCryptoData = async() => {
 
     try {
         //fetch data from the API
-        const res = await axios.request<APIResponse>(options);
+        const res = await axios.request<APIResponse[]>(options);
         
         //update the database
-        const data: CryptoCurrency = {
-            id: res.data.id,
-            name: res.data.name,
-            symbol: res.data.symbol,
-            current_price: res.data.current_price,
-            market_cap: res.data.market_cap,
-            price_change_24h: res.data.price_change_24h,
-            last_updated: res.data.last_updated,
-        }
-        await updateDb(data);
+        res.data.map(async (crypto) => {
+            const data: CryptoCurrency = {
+                id: crypto.id,
+                name: crypto.name,
+                symbol: crypto.symbol,
+                current_price: crypto.current_price,
+                market_cap: crypto.market_cap,
+                price_change_24h: crypto.price_change_24h,
+                last_updated: crypto.last_updated,
+            }
+            await updateDb(data);
+        })
     }
     catch(err) {
         console.error("Error while fetching data from API and updating to database:");
