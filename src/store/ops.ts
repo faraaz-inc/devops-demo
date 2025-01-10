@@ -2,6 +2,9 @@ import axios from "axios";
 import { getDb } from "./db"
 import { APIResponse, CryptoCurrency } from "./types";
 
+const API_URL = "https://api.coingecko.com/api/v3/coins/markets";
+const COINS = ["bitcoin", "ethereum", "matic-network"];
+
 
 export const scheduleDbUpdates = async() => {
     //manually run the first time on starting up the server
@@ -31,7 +34,11 @@ export const scheduleDbUpdates = async() => {
 const updateCryptoData = async() => {
     const options = {
         method: "GET",
-        url: "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=bitcoin,ethereum,matic-network",
+        url: API_URL,
+        params: {
+            ids: COINS.join(","),
+            vs_currency: "usd",
+        },
         headers: {accept: "application/json"}
     };
 
