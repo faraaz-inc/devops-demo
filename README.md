@@ -1,6 +1,6 @@
 # KoinX hiring assignment
 
-## Folder Structure
+## Folder structure
 
 <pre>
 src      # Source Code
